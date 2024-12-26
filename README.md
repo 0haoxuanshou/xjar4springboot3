@@ -36,8 +36,8 @@ xjar.exe java --add-opens java.base/jdk.internal.loader=ALL-UNNAMED --add-opens 
 #### 其他
 本项目还修改了以下逻辑，提高加密安全性：
 1. 关闭jvm远程调试功能,避免内存dump破解
-2. 验证java应用功能性, 避免被伪装应用截取密钥破解
-3. 新增java文件md5校验, 可以指定jdk执行绑定和进一步防止伪装破解
+2. 验证java应用功能性, 避免被伪装应用截取密钥
+3. 新增java.exe文件的md5校验逻辑, 可以指定jdk版本以及防止伪装破解
 4. 最后计划加上启动器的自我校验？ 进一步提高破解难度！不过这个就不计划开源了
 
 其他操作和原来保持一致。
