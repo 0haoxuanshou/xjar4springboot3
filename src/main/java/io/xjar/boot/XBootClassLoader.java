@@ -70,11 +70,14 @@ public class XBootClassLoader extends LaunchedClassLoader {
         }
         return new XBootEnumeration(enumeration);
     }
-
+    private final String SPRING_PATCH = "org.springframework.core.io.UrlResource";
     @Override
     protected Class<?> findClass(String name) throws ClassNotFoundException {
         Class<?> aClass = null;
         try {
+            if(SPRING_PATCH.equals(name)) {
+                throw new ClassFormatError("do patch code");
+            }
             aClass = super.findClass(name);
         } catch (ClassFormatError e) {
             String path = name.replace('.', '/').concat(".class");
@@ -86,7 +89,7 @@ public class XBootClassLoader extends LaunchedClassLoader {
                 ByteArrayOutputStream bos = new ByteArrayOutputStream();
                 XKit.transfer(in, bos);
                 byte[] bytes = bos.toByteArray();
-                if(name.equals("org.springframework.core.io.UrlResource")) {
+                if(SPRING_PATCH.equals(name)) {
                     System.out.println("org.springframework.core.io.UrlResource.createRelative 已经回退到老版本");
                     bytes = injectcode(bytes);
                 }
