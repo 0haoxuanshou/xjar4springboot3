@@ -56,6 +56,11 @@ public class Test {
      *
      * 简单的说就是,如果有include配置,那么只会加密include的内容，如果没有include配置，则整个项目全部加密。
      * 如果include配置和exclude配置都存在，那么会将include里面配置排除掉exclude, 剩下的内容进行加密处理
+     *
+     * 关于配置指定jdk版本
+     * 1. 首先下载并安装相应的jdk
+     * 2. 下载java.exe， windows/linux可能不一样
+     * 3. 使用项目目录的 md5计算工具 计算md5值，然后配置进去即可
      */
     @org.junit.Test
     public void generationJar2() {
@@ -69,10 +74,10 @@ public class Test {
                     .from(jarpath + "/demotestjvm-0.0.1-SNAPSHOT.jar")  // 加密的源文件
                     .use(password)
                     // 这里是配置执行的java.exe文件的md5,也就是只有指定版本的jdk才能运行
-                    // 可以指定多个，一个匹配即可运行；使用128bit md5值进行比较
+                    // 可以指定多个，一个匹配即可运行；使用128bit md5值进行比较，项目跟目录有现成的md5计算工具
                     .jdkmd5(new String[]{
                             "683C5B2267B21EAC97A949BAB59CE46B",
-//                            "99695C06445AF934F4FC40DA7A39DD10"
+                            "99695C06445AF934F4FC40DA7A39DD10"
                     })
                     .include("/com/xd/**")
                     .include("/*.*")
