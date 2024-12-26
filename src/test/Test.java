@@ -68,7 +68,7 @@ public class Test {
             XCryptos.encryption()
                     .from(jarpath + "/demotestjvm-0.0.1-SNAPSHOT.jar")  // 加密的源文件
                     .use(password)
-                    // 这里执行的java.exe执行文件的md5,也就是只有指定版本的jdk才能运行
+                    // 这里是配置执行的java.exe文件的md5,也就是只有指定版本的jdk才能运行
                     // 可以指定多个，一个匹配即可运行；使用128bit md5值进行比较
                     .jdkmd5(new String[]{
                             "683C5B2267B21EAC97A949BAB59CE46B",
