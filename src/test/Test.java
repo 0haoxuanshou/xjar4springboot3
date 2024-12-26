@@ -56,8 +56,8 @@ public class Test {
      * 1. com.xd包下的所有class
      * 2. classes路径下的所有配置文件
      *
-     * 简单的说就是,如果有include,那么只会加密include的内容，如果没有include配置，则整个项目全部加密。
-     * 如果include和exclude都存在，那么会在include里面排除掉exclude
+     * 简单的说就是,如果有include配置,那么只会加密include的内容，如果没有include配置，则整个项目全部加密。
+     * 如果include配置和exclude配置都存在，那么会将include里面配置排除掉exclude, 剩下的内容进行加密处理
      */
     @org.junit.Test
     public void generationJar2() {
