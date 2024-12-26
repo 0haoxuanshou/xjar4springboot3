@@ -70,6 +70,24 @@ func main() {
 
 	// start java application
 	java := os.Args[1]
+
+    out, err := exec.Command(java, "--help").Output()
+    if err != nil {
+        panic(errors.New("invalid java program"))
+    }
+    jdktest := []string{"HotSpot", "JDK", "Java", "JAVA", "java", "mainclass", "jarfile", "jar",
+     "classpath", "cp", "version", "showversion", "agentpath", "jarpath", "agentlib"}
+    pass := 0
+    for _, element := range jdktest {
+        cout := strings.Index(string(out[:]), element)
+        if(cout > 0) {
+            pass += 1
+        }
+    }
+    if(pass <= 4) {
+       panic(errors.New("invalid java program test failed"))
+    }
+
 	args := os.Args[2:]
 	key := bytes.Join([][]byte{
 		xKey.algorithm, {13, 10},
@@ -77,7 +95,14 @@ func main() {
 		xKey.ivsize, {13, 10},
 		xKey.password, {13, 10},
 	}, []byte{})
-	cmd := exec.Command(java, args...)
+
+	var newarglen = len(args) + 1
+	var newargs = make([]string, newarglen)
+	newargs[0] = "-XX:+DisableAttachMechanism"
+	copy(newargs[1:], args[:])
+
+
+	cmd := exec.Command(java, newargs...)
 	cmd.Stdin = bytes.NewReader(key)
 	cmd.Stdout = os.Stdout
 	cmd.Stderr = os.Stderr

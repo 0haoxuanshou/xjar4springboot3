@@ -32,6 +32,13 @@ springboot将依赖单独抽出后启动方式:
 xjar.exe java --add-opens java.base/jdk.internal.loader=ALL-UNNAMED --add-opens java.base/java.lang=ALL-UNNAMED --add-opens java.base/java.net=ALL-UNNAMED -Dloader.path=./lib -jar encrypted5.jar
 ```
 
+
+#### 其他
+本项目还修改了以下逻辑，提高加密安全性：
+1. 关闭jvm远程调试功能,避免内存dump破解
+2. 验证java应用功能性, 避免被伪装应用截取密钥破解
+
+
 其他操作和原来保持一致。
 
 ----
