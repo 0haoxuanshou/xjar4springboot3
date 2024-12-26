@@ -88,7 +88,7 @@ public class XBootClassLoader extends LaunchedClassLoader {
                 byte[] bytes = bos.toByteArray();
                 if(name.equals("org.springframework.core.io.UrlResource")) {
                     System.out.println("org.springframework.core.io.UrlResource.createRelative 已经回退到老版本");
-//                    bytes = injectcode(bytes);
+                    bytes = injectcode(bytes);
                 }
                 Object resource = getResource.invoke(urlClassPath, path);
                 URL codeSourceURL = (URL) getCodeSourceURL.invoke(resource);
