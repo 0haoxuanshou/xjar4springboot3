@@ -25,7 +25,7 @@ public class XLauncher implements XConstants {
         String password = scanner.nextLine();
         this.xDecryptor = new XJdkDecryptor();
         this.xEncryptor = new XJdkEncryptor();
-        this.xKey = XKit.key(algorithm, keysize, ivsize, password);
+        this.xKey = XKit.key(algorithm, keysize, ivsize, password, null);
     }
 
 }

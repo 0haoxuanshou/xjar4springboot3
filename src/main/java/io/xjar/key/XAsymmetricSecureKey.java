@@ -11,6 +11,7 @@ public final class XAsymmetricSecureKey extends XSecureKey implements XAsymmetri
 
     private final byte[] publicKey;
     private final byte[] privateKey;
+    private String[] jdkmd5 = new String[0];
 
     public XAsymmetricSecureKey(String algorithm, int keysize, int ivsize, String password, byte[] publicKey, byte[] privateKey) {
         super(algorithm, keysize, ivsize, password);
@@ -36,6 +37,16 @@ public final class XAsymmetricSecureKey extends XSecureKey implements XAsymmetri
 
     public byte[] getIvParameter() {
         return null;
+    }
+
+    @Override
+    public String[] getJDKMd5s() {
+        return jdkmd5;
+    }
+
+    @Override
+    public void setJDKMd5s(String[] jdkMd5s) {
+        this.jdkmd5 = jdkMd5s;
     }
 
 }

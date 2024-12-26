@@ -21,6 +21,7 @@ import static io.xjar.XFilters.*;
 public class XEncryption {
     private File jar;
     private XKey key;
+    private String[] jdkmd5 = new String[0];
     private XAnyEntryFilter<JarArchiveEntry> includes = XKit.any();
     private XAllEntryFilter<JarArchiveEntry> excludes = XKit.all();
 
@@ -60,6 +61,12 @@ public class XEncryption {
         }
     }
 
+    public XEncryption jdkmd5(String[] jdkmd5) {
+        this.key.setJDKMd5s(jdkmd5);
+        this.jdkmd5 = jdkmd5;
+        return this;
+    }
+
     /**
      * 指定高级密码
      *
@@ -69,9 +76,9 @@ public class XEncryption {
      * @param password  加密密码
      * @return {@code this}
      */
-    public XEncryption use(String algorithm, int keysize, int ivsize, String password) {
+    public XEncryption use(String algorithm, int keysize, int ivsize, String password, String[] jdkmd5s) {
         try {
-            this.key = XKit.key(algorithm, keysize, ivsize, password);
+            this.key = XKit.key(algorithm, keysize, ivsize, password, jdkmd5s);
             return this;
         } catch (NoSuchAlgorithmException e) {
             throw new IllegalStateException(e);

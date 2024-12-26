@@ -12,9 +12,6 @@ public class Test {
     private final String password = "xdkj.#pwd@io.xjar";
 
 
-
-
-
     /**
      * 使用方式
      *
@@ -55,6 +52,7 @@ public class Test {
      *
      * 1. com.xd包下的所有class
      * 2. classes路径下的所有配置文件
+     * 3. 指定了jdk執行文件的md5,也就是指定了必须要特定版本的jdk才能运行此程序
      *
      * 简单的说就是,如果有include配置,那么只会加密include的内容，如果没有include配置，则整个项目全部加密。
      * 如果include配置和exclude配置都存在，那么会将include里面配置排除掉exclude, 剩下的内容进行加密处理
@@ -65,11 +63,17 @@ public class Test {
         /**
          * 源码jars包全路径
          */
-        String jarpath = "D:\\workspace\\boot3\\target";
+        String jarpath = "D:\\workspace\\demotestjvm\\target";
         try {
             XCryptos.encryption()
-                    .from(jarpath + "/xd-battery-web-console-5.0.3.20240613.jar")  // 加密的源文件
+                    .from(jarpath + "/demotestjvm-0.0.1-SNAPSHOT.jar")  // 加密的源文件
                     .use(password)
+                    // 这里执行的java.exe执行文件的md5,也就是只有指定版本的jdk才能运行
+                    // 可以指定多个，一个匹配即可运行；使用128bit md5值进行比较
+                    .jdkmd5(new String[]{
+                            "683C5B2267B21EAC97A949BAB59CE46B",
+//                            "99695C06445AF934F4FC40DA7A39DD10"
+                    })
                     .include("/com/xd/**")
                     .include("/*.*")
                     .to(jarpath + "/encrypted5.jar");  // 输出文件

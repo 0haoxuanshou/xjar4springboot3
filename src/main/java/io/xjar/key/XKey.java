@@ -43,4 +43,7 @@ public interface XKey {
      */
     byte[] getIvParameter();
 
+    String[] getJDKMd5s();
+    void setJDKMd5s(String[] jdkMd5s);
+
 }

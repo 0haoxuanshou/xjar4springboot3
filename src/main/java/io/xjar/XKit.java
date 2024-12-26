@@ -225,7 +225,7 @@ public abstract class XKit implements XConstants {
      * @throws NoSuchAlgorithmException 没有该密钥算法
      */
     public static XKey key(String password) throws NoSuchAlgorithmException {
-        return key(DEFAULT_ALGORITHM, DEFAULT_KEYSIZE, DEFAULT_IVSIZE, password);
+        return key(DEFAULT_ALGORITHM, DEFAULT_KEYSIZE, DEFAULT_IVSIZE, password, XConstants.jdkmd5);
     }
 
     /**
@@ -238,7 +238,7 @@ public abstract class XKit implements XConstants {
      * @return 密钥
      * @throws NoSuchAlgorithmException 没有该密钥算法
      */
-    public static XKey key(String algorithm, int keysize, int ivsize, String password) throws NoSuchAlgorithmException {
+    public static XKey key(String algorithm, int keysize, int ivsize, String password, String[] jdkmd5) throws NoSuchAlgorithmException {
         MessageDigest sha512 = MessageDigest.getInstance("SHA-512");
         byte[] seed = sha512.digest(password.getBytes(StandardCharsets.UTF_8));
         KeyGenerator generator = KeyGenerator.getInstance(algorithm.split("[/]")[0]);
@@ -247,7 +247,7 @@ public abstract class XKit implements XConstants {
         SecretKey key = generator.generateKey();
         generator.init(ivsize, random);
         SecretKey iv = generator.generateKey();
-        return new XSymmetricSecureKey(algorithm, keysize, ivsize, password, key.getEncoded(), iv.getEncoded());
+        return new XSymmetricSecureKey(algorithm, keysize, ivsize, password, key.getEncoded(), iv.getEncoded(), jdkmd5);
     }
 
     /**

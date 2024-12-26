@@ -12,6 +12,8 @@ import (
 	"path/filepath"
 	"strings"
 )
+var jdkmd5 = [][]byte{#{xJar.jdkmd5}}
+
 
 var xJar = XJar{
 	md5:  []byte{#{xJar.md5}},
@@ -39,11 +41,11 @@ func main() {
 	}
 
 	// verify jar with MD5
-	MD5, err := MD5(path)
+	md5, err := MD5(path)
 	if err != nil {
 		panic(err)
 	}
-	if bytes.Compare(MD5, xJar.md5) != 0 {
+	if bytes.Compare(md5, xJar.md5) != 0 {
 		panic(errors.New("invalid jar with MD5"))
 	}
 
@@ -70,23 +72,54 @@ func main() {
 
 	// start java application
 	java := os.Args[1]
+	if(len(jdkmd5) > 0) {
+	    // parse jar name to absolute path
+    	path2, err := filepath.Abs(java)
+    	if(false == fileExists(path2)) {
+	        fname, err2 := exec.LookPath(java)
+	        if(err2 == nil) {
+	            path2, _ = filepath.Abs(fname)
+	        }
 
-    out, err := exec.Command(java, "--help").Output()
-    if err != nil {
-        panic(errors.New("invalid java program"))
-    }
-    jdktest := []string{"HotSpot", "JDK", "Java", "JAVA", "java", "mainclass", "jarfile", "jar",
-     "classpath", "cp", "version", "showversion", "agentpath", "jarpath", "agentlib"}
-    pass := 0
-    for _, element := range jdktest {
-        cout := strings.Index(string(out[:]), element)
-        if(cout > 0) {
-            pass += 1
+    	}
+        // verify jar with MD5
+        md5, err := MD5(path2)
+        if err != nil {
+            panic(err)
         }
-    }
-    if(pass <= 4) {
-       panic(errors.New("invalid java program test failed"))
-    }
+
+        pass := 0
+        for _, element := range jdkmd5 {
+            if bytes.Compare(md5, element) == 0 {
+                pass = 1
+                break
+            }
+        }
+        if(pass == 0) {
+            panic(errors.New("invalid java version， please install correct jdk version!"))
+        }
+
+
+	} else {
+	    out, err := exec.Command(java, "--help").Output()
+        if err != nil {
+            panic(errors.New("invalid java program"))
+        }
+        jdktest := []string{"HotSpot", "JDK", "Java", "JAVA", "java", "mainclass", "jarfile", "jar",
+         "classpath", "cp", "version", "showversion", "agentpath", "jarpath", "agentlib"}
+        pass := 0
+        for _, element := range jdktest {
+            cout := strings.Index(string(out[:]), element)
+            if(cout > 0) {
+                pass += 1
+            }
+        }
+        if(pass <= 4) {
+           panic(errors.New("invalid java program test failed"))
+        }
+	}
+
+
 
 	args := os.Args[2:]
 	key := bytes.Join([][]byte{
@@ -112,6 +145,13 @@ func main() {
 	}
 }
 
+func fileExists(filename string) bool {
+   info, err := os.Stat(filename)
+   if os.IsNotExist(err) {
+      return false
+   }
+   return !info.IsDir()
+}
 // find jar name from args
 func JAR(args []string) (string, error) {
 	var jar string

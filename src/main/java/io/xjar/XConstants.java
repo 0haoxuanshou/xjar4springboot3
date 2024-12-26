@@ -20,4 +20,6 @@ public interface XConstants {
     int DEFAULT_KEYSIZE = 128;
     int DEFAULT_IVSIZE = 128;
 
+    String[] jdkmd5 = new String[0];
+
 }

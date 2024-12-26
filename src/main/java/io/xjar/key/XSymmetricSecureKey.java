@@ -11,11 +11,13 @@ public final class XSymmetricSecureKey extends XSecureKey implements XSymmetricK
 
     private final byte[] secretKey;
     private final byte[] iv;
+    private  String[] jdkmd5;
 
-    public XSymmetricSecureKey(String algorithm, int keysize, int ivsize, String password, byte[] key, byte[] iv) {
+    public XSymmetricSecureKey(String algorithm, int keysize, int ivsize, String password, byte[] key, byte[] iv, String[] jdkmd5) {
         super(algorithm, keysize, ivsize, password);
         this.secretKey = key;
         this.iv = iv;
+        this.jdkmd5 = jdkmd5;
     }
 
     public byte[] getEncryptKey() {
@@ -34,4 +36,13 @@ public final class XSymmetricSecureKey extends XSecureKey implements XSymmetricK
         return iv;
     }
 
+    @Override
+    public String[] getJDKMd5s() {
+        return jdkmd5;
+    }
+
+    @Override
+    public void setJDKMd5s(String[] jdkMd5s) {
+        this.jdkmd5 = jdkMd5s;
+    }
 }

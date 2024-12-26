@@ -71,7 +71,7 @@ public class XDecryption {
      */
     public XDecryption use(String algorithm, int keysize, int ivsize, String password) {
         try {
-            this.key = XKit.key(algorithm, keysize, ivsize, password);
+            this.key = XKit.key(algorithm, keysize, ivsize, password, this.key.getJDKMd5s());
             return this;
         } catch (NoSuchAlgorithmException e) {
             throw new IllegalStateException(e);
